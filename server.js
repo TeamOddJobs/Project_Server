@@ -2,6 +2,8 @@
 //Dillon Shaver, Loureen Viloria
 //File: server.js
 //Description: web api server code for project
+require('dotenv').config();
+
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -34,7 +36,7 @@ router.post('/signup', function(req, res) {
 
         user.save(function(err){
             if (err) {
-                if (err.code == 11000){
+                if (err.code === 11000){
                     return res.json({ success: false, message: 'A user with that username already exists.'});
                 }
                 else{
