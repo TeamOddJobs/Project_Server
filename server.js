@@ -14,10 +14,7 @@ var Charity = require('./Charity');
 var Item = require('./Items');
 
 var app = express();
-app.use(cors({
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-}));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -138,7 +135,7 @@ router.route('/items')
                 res.status(401).send({success: false, msg: "An unexpected error occured while trying to create item.", error: err});
             }
             else{
-                res.stauts(200).send({success: true, msg:"Item successfully created."});
+                res.status(200).send({success: true, msg:"Item successfully created."});
             }
         })
     })
