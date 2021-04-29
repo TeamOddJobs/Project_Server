@@ -25,7 +25,7 @@ var router = express.Router();
 //Sign up
 router.post('/signup', function(req, res) {
     if (!req.body.username || !req.body.password) {
-        return res.json({success: false, msg: 'Please include both username and password to signup.'})
+        return res.json({success: false, msg: 'Please include both username and password to signup.', Access-Control-Allow-Origin: '*'})
     } else {
         var user = new User();
         user.username = req.body.username;
@@ -34,13 +34,13 @@ router.post('/signup', function(req, res) {
         user.save(function(err){
             if (err) {
                 if (err.code === 11000){
-                    return res.json({ success: false, message: 'A user with that username already exists.'});
+                    return res.json({ success: false, message: 'A user with that username already exists.', Access-Control-Allow-Origin: '*'});
                 }
                 else{
-                    return res.json({success: false, msg: 'Unexpected error occured while trying to save user.'});
+                    return res.json({success: false, msg: 'Unexpected error occured while trying to save user.', Access-Control-Allow-Origin: '*'});
                 }
             }
-            return res.json({success: true, msg: 'Successfully created new user.'})
+            return res.json({success: true, msg: 'Successfully created new user.', Access-Control-Allow-Origin: '*'})
         });
     }
 });
@@ -60,10 +60,10 @@ router.post('/signin', function (req, res) {
             if (isMatch) {
                 var userToken = { id: user.id, username: user.username };
                 var token = jwt.sign(userToken, process.env.SECRET_KEY);
-                res.json ({success: true, token: 'JWT ' + token, userName: userToken});
+                res.json ({success: true, token: 'JWT ' + token, userName: userToken, Access-Control-Allow-Origin: '*'});
             }
             else {
-                res.status(401).send({success: false, msg: 'Authentication failed.'});
+                res.status(401).send({success: false, msg: 'Authentication failed.', Access-Control-Allow-Origin: '*'});
             }
         })
     })
@@ -74,10 +74,10 @@ router.route('/charity')
     .get(authJwtController.isAuthenticated, function(req,res){
         Charity.find({}, function(err, charityList){
             if(err){
-                return res.status(400).send({success: false, msg: "An unexpected error occurred while trying to get all charities.", error: err});
+                return res.status(400).send({success: false, msg: "An unexpected error occurred while trying to get all charities.", error: err, Access-Control-Allow-Origin: '*'});
             }
             else{
-                return res.status(200).send({success: true, Items: charityList, msg: "charity list sent."});
+                return res.status(200).send({success: true, Items: charityList, msg: "charity list sent.", Access-Control-Allow-Origin: '*'});
             }
         })
     })
@@ -95,10 +95,10 @@ router.route('/items')
 
             Item.findOne({itemId: itemFind.itemId}, function(err, item){
                 if(err){
-                    return res.status(401).send({success: false, msg: "An unexpected error occured while trying to find item.", error: err});
+                    return res.status(401).send({success: false, msg: "An unexpected error occured while trying to find item.", error: err, Access-Control-Allow-Origin: '*'});
                 }
                 else{
-                    return res.status(200).send({success: true, Item: item});
+                    return res.status(200).send({success: true, Item: item, Access-Control-Allow-Origin: '*'});
                 }
             })
         }
@@ -106,17 +106,17 @@ router.route('/items')
         else{
             Item.find({}, function(err, itemList){
                 if(err){
-                    return res.status(400).send({success: false, msg: "An unexpected error occured while trying to get all items.", error: err});
+                    return res.status(400).send({success: false, msg: "An unexpected error occured while trying to get all items.", error: err, Access-Control-Allow-Origin: '*'});
                 }
                 else{
-                    return res.status(200).send({success: true, Items: itemList, msg: "Item list sent."});
+                    return res.status(200).send({success: true, Items: itemList, msg: "Item list sent.", Access-Control-Allow-Origin: '*'});
                 }
             })
         }
     })
     .post(authJwtController.isAuthenticated, function(req,res){
         if(!req.body.itemId || !req.body.itemName || !req.body.itemDesc || !req.body.itemPrice){
-            return res.status(400).send({success: false, msg:'Please include item id, item name, itemDesc, and price'})
+            return res.status(400).send({success: false, msg:'Please include item id, item name, itemDesc, and price', Access-Control-Allow-Origin: '*'})
         }
         var itemSave = new Item();
         itemSave.itemId = req.body.itemId;
@@ -132,16 +132,16 @@ router.route('/items')
 
         itemSave.save(function(err){
             if(err){
-                res.status(401).send({success: false, msg: "An unexpected error occured while trying to create item.", error: err});
+                res.status(401).send({success: false, msg: "An unexpected error occured while trying to create item.", error: err, Access-Control-Allow-Origin: '*'});
             }
             else{
-                res.stauts(200).send({success: true, msg:"Item successfully created."});
+                res.stauts(200).send({success: true, msg:"Item successfully created.", Access-Control-Allow-Origin: '*'});
             }
         })
     })
     .put(authJwtController.isAuthenticated, function(req,res){
         if(!req.body.itemId || !req.body.itemName || !req.body.itemDesc || !req.body.itemPrice){
-            return res.status(400).send({success: false, msg:'Please include item id, item name, itemDesc, and price'})
+            return res.status(400).send({success: false, msg:'Please include item id, item name, itemDesc, and price', Access-Control-Allow-Origin: '*'})
         }
         var itemUp = new Item();
         itemUp.itemId = req.body.itemId;
@@ -157,7 +157,7 @@ router.route('/items')
 
         Item.findOne({itemId: itemFind.itemId}, function(err, item){
             if(err){
-                return res.status(401).send({success: false, msg: "An unexpected error occurred while trying to find item to update.", error: err});
+                return res.status(401).send({success: false, msg: "An unexpected error occurred while trying to find item to update.", error: err, Access-Control-Allow-Origin: '*'});
             }
             else{
                 item.itemId = itemUp.itemId;
@@ -167,10 +167,10 @@ router.route('/items')
                 item.imageUrl = itemUp.imageUrl;
                 item.save(function(err){
                     if (err){
-                        res.status(401).send({success: false, msg: "an unexpected error occurred while trying to update item"});
+                        res.status(401).send({success: false, msg: "an unexpected error occurred while trying to update item", Access-Control-Allow-Origin: '*'});
                     }
                     else{
-                        res.status(200).send({success: true, msg: "Item successfully updated."});
+                        res.status(200).send({success: true, msg: "Item successfully updated.", Access-Control-Allow-Origin: '*'});
                     }
                 })
             }
@@ -178,16 +178,16 @@ router.route('/items')
     })
     .delete(authJwtController.isAuthenticated, function(req,res){
         if(!req.header('itemId')){
-            res.status(401).send({success: false, msg: "Please include item Id."});
+            res.status(401).send({success: false, msg: "Please include item Id.", Access-Control-Allow-Origin: '*'});
         }
         var itemDel = new Item();
         itemDel.itemId = req.header('itemId');
 
         Item.findOneAndRemove({itemId: itemDel.itemId}, function(err, item){
             if (err) {
-                res.status(401).send({success: false, msg: "an unexpected error occurred while trying to delete Item"});
+                res.status(401).send({success: false, msg: "an unexpected error occurred while trying to delete Item", Access-Control-Allow-Origin: '*'});
             } else {
-                res.status(200).send({success: true, msg: "Item successfully deleted."});
+                res.status(200).send({success: true, msg: "Item successfully deleted.", Access-Control-Allow-Origin: '*'});
             }
         })
     })
