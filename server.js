@@ -2,9 +2,6 @@
 //Dillon Shaver, Loureen Viloria
 //File: server.js
 //Description: web api server code for project
-require('dotenv').config();
-
-
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
