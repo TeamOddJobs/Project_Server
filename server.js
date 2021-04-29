@@ -14,7 +14,9 @@ var Charity = require('./Charity');
 var Item = require('./Items');
 
 var app = express();
-//app.use(cors());
+app.use(cors({
+    res.header("Access-Control-Allow-Origin", "*");
+    ));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
