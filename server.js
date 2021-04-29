@@ -22,6 +22,12 @@ app.use(passport.initialize());
 
 var router = express.Router();
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //Sign up
 router.post('/signup', function(req, res) {
     if (!req.body.username || !req.body.password) {
